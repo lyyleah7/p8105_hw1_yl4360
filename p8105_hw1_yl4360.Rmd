@@ -1,4 +1,25 @@
 ---
-title: "p8105_hw1_yl4360"
+title: "Homework 1"
 output: github_document
 ---
+
+# Problem 1
+
+Create a data frame.
+```{r message=FALSE}
+library(tidyverse)
+df = tibble(
+  vec_numeric = rnorm(8),
+  vec_logical = vec_numeric > 0,
+  vec_char = c("1", "2", "3", "4", "5", "6", "7", "8"),
+  vec_factor = factor(c("low", "high", "medium", "high", "low", "medium", "high", "low"))
+)
+
+df
+
+mean(pull(df, vec_numeric))
+mean(pull(df, vec_logical))
+mean(pull(df, vec_char))
+mean(pull(df, vec_factor))
+```
+
