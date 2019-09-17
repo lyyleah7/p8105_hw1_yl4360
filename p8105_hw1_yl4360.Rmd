@@ -5,21 +5,72 @@ output: github_document
 
 # Problem 1
 
-Create a data frame.
+Create a data frame and take means of each variable.
 ```{r message=FALSE}
 library(tidyverse)
-df = tibble(
-  vec_numeric = rnorm(8),
-  vec_logical = vec_numeric > 0,
-  vec_char = c("1", "2", "3", "4", "5", "6", "7", "8"),
-  vec_factor = factor(c("low", "high", "medium", "high", "low", "medium", "high", "low"))
-)
 
-df
+vec_numeric = rnorm(8)
+vec_logical = vec_numeric > 0
+vec_char = c("1", "2", "3", "4", "5", "6", "7", "8")
+vec_factor = factor(c("low", "high", "medium", "high",  "low", "medium", "high", "low"))
 
-mean(pull(df, vec_numeric))
-mean(pull(df, vec_logical))
-mean(pull(df, vec_char))
-mean(pull(df, vec_factor))
+df = tibble(vec_numeric, vec_logical, vec_char, vec_factor)
+
+mean(vec_numeric)
+mean(vec_logical)
+mean(vec_char)
+mean(vec_factor)
+
 ```
+
+I can take the mean of _numeric_ and _logical_ variable but cannot do this to _factor_ and _character_.
+
+```{r eval=FALSE}
+as.numeric(vec_logical)
+as.numeric(vec_char)
+as.numeric(vec_factor)
+```
+
+`as.numeric` function transfers all the variables to numeric.??????
+
+Calulation.
+
+```{r}
+as.numeric(vec_logical) * vec_numeric
+as.factor(vec_logical) * vec_numeric
+as.numeric(as.factor(vec_logical)) * vec_numeric
+```
+
+
+
+# Problem 2
+
+```{r}
+x = rnorm(500)
+y = rnorm(500)
+vec_logical2 = x + y > 1
+vec_numeric2 = as.numeric(vec_logical2)
+vec_factor2 = as.factor(vec_logical2)
+
+df2 = tibble(x, y, vec_logical2, vec_numeric2, vec_factor2)
+
+df2
+```
+
+A short description of my vector:
+
+*  There are `r nrow(df2)` rows and `r ncol(df2)` columes.
+
+*  The mean of x is `r mean(x)`. The median of x is `r median(x)`. The standard deviation of x is `r sd(x)`.
+
+*  The proportion of cases for which x+y>1 is `r  sum(as.numeric(vec_logical2)) / 500`.
+
+```{r}
+ggplot(df2, aes(x = x, y = y, color = vec_logical2)) + geom_point()
+ggplot(df2, aes(x = x, y = y, color = vec_factor2)) + geom_point()
+ggplot(df2, aes(x = x, y = y, color = vec_numeric2)) + geom_point()
+
+
+```
+
 
