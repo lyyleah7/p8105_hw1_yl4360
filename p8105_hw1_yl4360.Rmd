@@ -5,14 +5,16 @@ output: github_document
 
 # Problem 1
 
-Create a data frame and take means of each variable.
+**Create a data frame and take means of each variable.**
 ```{r message=FALSE}
 library(tidyverse)
 
 vec_numeric = rnorm(8)
 vec_logical = vec_numeric > 0
 vec_char = c("1", "2", "3", "4", "5", "6", "7", "8")
-vec_factor = factor(c("low", "high", "medium", "high",  "low", "medium", "high", "low"))
+vec_factor = factor(c("a", "a", "a", "b",  "b", "b", "c", "c"))
+
+levels(vec_factor) #to make sure there are 3 levels
 
 df = tibble(vec_numeric, vec_logical, vec_char, vec_factor)
 
@@ -31,9 +33,15 @@ as.numeric(vec_char)
 as.numeric(vec_factor)
 ```
 
-`as.numeric` function transfers all the variables to numeric.??????
+`as.numeric` function transfers all the variables to numeric:
 
-Calulation.
+*  True logical variable equals to 1 numerically and faulse equals to 0.
+*  Different character equals to different number.
+*  The same level of factor equals to the same number. 
+
+I think that because the mean of factor and character is meaningless so I cannot calculate it but logical variable can be defined to real number so I can take the mean of it.
+
+**Calulations.**
 
 ```{r}
 as.numeric(vec_logical) * vec_numeric
@@ -44,6 +52,8 @@ as.numeric(as.factor(vec_logical)) * vec_numeric
 
 
 # Problem 2
+
+**Create a data frame.**
 
 ```{r}
 x = rnorm(500)
@@ -65,12 +75,24 @@ A short description of my vector:
 
 *  The proportion of cases for which x+y>1 is `r  sum(as.numeric(vec_logical2)) / 500`.
 
+**Make scatterplots.**
+
 ```{r}
-ggplot(df2, aes(x = x, y = y, color = vec_logical2)) + geom_point()
+fp = ggplot(df2, aes(x = x, y = y, color = vec_logical2)) + geom_point()
+fp
 ggplot(df2, aes(x = x, y = y, color = vec_factor2)) + geom_point()
 ggplot(df2, aes(x = x, y = y, color = vec_numeric2)) + geom_point()
-
-
 ```
+
+**Comment on the color scales.**
+
+In all the plots, there are 2 types of color. This is because my nuneric and factor variables are convert from my logical variable which has only two value, true or faulse. When it comes to numeric, we can see in the plot that it is either 1 or 0.
+
+When the color points use the logical and factor variable, the legend is true and faulse. When the color points use the numeric variable, the legend is a gradient ruler.
+
+```{r}
+ggsave("scatterplot1.pdf", plot = fp, path = "./")
+```
+
 
 
